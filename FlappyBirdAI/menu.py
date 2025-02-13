@@ -106,4 +106,43 @@ def show_high_scores():
 
                 if back_button_rect.collidepoint(pos):  # Kliknięcie "Back to Menu"
                     show_menu()  # Powrót do menu głównego, kończymy tę funkcję
-                
+
+def show_game_over(score):
+    import sys
+    from utils import screen, draw_text
+
+    pygame.init()
+    font = pygame.font.SysFont(None, 48)
+
+    # Tło ekranu na jasnoniebiesko
+    screen.fill((135, 206, 250))
+
+    # Wyświetl "Game Over"
+    draw_text("Game Over", font, (255, 255, 0), WIDTH // 2, HEIGHT // 4)
+
+    # Wyświetl wynik bez dodatkowego odstępu
+    draw_text(f"Score: {score}", font, (255, 255, 255), WIDTH //2, HEIGHT // 4 +50)
+
+    # Przycisk "Play Again"
+    play_again_rect = draw_text("Play Again", font, (255, 255, 255), WIDTH // 2, HEIGHT // 2)
+
+    # Przycisk "Return to Menu"
+    return_menu_rect = draw_text("Return to Menu", font, (255, 255, 255), WIDTH // 2, HEIGHT // 2 +50)
+
+    pygame.display.update()  # Odśwież ekran
+
+    # Czekaj na interakcję użytkownika
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if play_again_rect.collidepoint(event.pos):
+                    from game import play_game
+                    play_game()  # Uruchom ponownie grę
+                    return
+                if return_menu_rect.collidepoint(event.pos):
+                    from menu import show_menu
+                    show_menu()  # Powrót do menu
+                    return
